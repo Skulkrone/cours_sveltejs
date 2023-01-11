@@ -1,108 +1,38 @@
+<!-- La réactivité avec Svelte -->
 <script>
-	let objDataForm = {
-		prenom: "",
-		age: "",
-		taille:"",
-		poids: "",
-		txtData: ""
-	}
-	let prenom = "";
-	let age = "";
-	let taille = "";
-	let poids = "";
-	let txtData = "";
-	// function inpFunc(e){
-	// 	// console.log(e.target.value);
-	// 	prenom = e.target.value;
-	// 	// console.log(prenom);
-	// }
+  let val1 = 100;
+  let val2 = 300;
+  let val3 = 50;
 
+  // Variable non réactive :
+  let totalNonReactif = val1 + val2 + val3;
 
+  // Variable réactive : $:
+  $: total = val1 + val2 + val3;
 
-	function handleData(e){
-		e.preventDefault();
-		prenom = objDataForm.prenom;
-		age = objDataForm.age;
-		taille = objDataForm.taille;
-		poids = objDataForm.poids;
-		txtData = objDataForm.txtData;
+  $: console.log("Vous avez modifié vos dépenses", val3, val2, val1);
 
-		objDataForm.prenom = "";
-		objDataForm.age = "";
-		objDataForm.taille = "";
-		objDataForm.poids= "";
-		objDataForm.txtData = "";
-	}
+  $: if(total > 1000) {
+    console.log("Attention, dépenses supérieures à 1000!");
+  }
+
+	let array = [1,2,3,4];
+
+  function depenseSup() {
+    // val3 = 800;
+		// array.push(5);
+		array = [...array, 5];
+		console.log(array);
+  }
 </script>
 
+<h1> {array} </h1>
 
-<div class="container">
+<h1>Réactif : {total}</h1>
+<h1>Non-Réactif : {totalNonReactif}</h1>
+<h3>{val3}</h3>
 
-	<form on:submit={handleData}>
-
-		<div class="mb-3">
-			<label for="prenom" class="form-label">Votre Prénom</label>
-			<!-- <input 
-			id="prenom" 
-			type="text" 
-			class="form-control" 
-			bind:value={prenom}
-			> -->
-			<input 
-			id="prenom" 
-			type="text" 
-			class="form-control" 
-			bind:value={objDataForm.prenom}
-			>
-
-			<label for="inpNumb" class="form-label">Votre Age</label>
-			<input 
-			type="number" 
-			id="inpNumb" 
-			class="form-control"
-			bind:value={objDataForm.age}
-			>
-
-			<label for="inpTaille" class="form-label">Votre Taille</label>
-			<input 
-			type="number" 
-			id="inpTaille" 
-			class="form-control"
-			bind:value={objDataForm.taille}
-			>
-
-			<label for="rangeNumb" class="form-label">Votre poids</label>
-			<input
-			type="range" 
-			id="rangeNumb" 
-			class="form-range"
-			bind:value={objDataForm.poids}
-			min="30" max="100">
-			<span>Sélection : {objDataForm.poids}</span>
-
-			<br><br>
-
-			<label for="txt" class="form-label">Votre message</label>
-			<textarea 
-			id="txt" 
-			class="form-control"
-			bind:value={objDataForm.txtData}
-			></textarea>
-		</div>
-		<button type="submit" class="btn btn-primary">Envoyer les données</button>
-	</form>
-	<br>
-	<h1>Votre prenom : {prenom}</h1>
-	<h2>Votre âge : {age} </h2>
-	<h2>Votre âge : {taille} </h2>
-	<h2>Votre poids : {poids} </h2>
-	<h3>Votre IMC : {#if poids} {(poids / Math.pow(taille / 100, 2)).toFixed(1)} {/if}</h3>
-	<hr>
-
-	<p>{txtData}</p>
-
-</div>
+<button on:click={depenseSup}>Changer une dépense</button>
 
 <style>
-
 </style>
